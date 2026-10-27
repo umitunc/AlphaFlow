@@ -5,15 +5,19 @@
 </p>
 
 <p align="center">
-  <strong>Next-Generation Local AI Video Alpha Matting, Luma Matte & 3D Depth Typography Desktop Studio</strong><br />
-  <em>Zero cloud uploads &bull; Zero subscription fees &bull; 100% Offline &bull; Temporal Flicker-Free &bull; Windows & macOS</em>
+  <img src="assets/icons/alphaflow_logo_transparent.png" alt="AlphaFlow Studio Pro Logo" width="110" />
 </p>
 
 <p align="center">
+  <strong>Next-Generation Local AI Video Alpha Matting, Luma Matte & 3D Depth Typography Desktop Studio</strong><br />
+  <em>Yeşil perdeye ihtiyaç duymadan her türlü videodaki insan ve nesneleri yapay zeka ile saniyeler içinde arka plandan ayırarak stüdyo kalitesinde şeffaf (ProRes 4444 / VP9 Alpha), Luma Matte ve karakter arkası 3D sinematik tipografi çıktıları üreten, tamamen cihaz içi (offline) ve çapraz platform bir video maskeleme stüdyosudur.</em>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-3.x%20Desktop-02569B?logo=flutter" alt="Flutter Desktop" />
   <img src="https://img.shields.io/badge/Python-3.10%2B-blue?logo=python" alt="Python 3.10+" />
-  <img src="https://img.shields.io/badge/GUI-PySide6%20%28Qt6%29-41CD52?logo=qt" alt="PySide6 Qt6" />
   <img src="https://img.shields.io/badge/Inference-ONNX%20Runtime-005CED?logo=onnx" alt="ONNX Runtime" />
-  <img src="https://img.shields.io/badge/Model-RobustVideoMatting%20(RVM)-FF6F00" alt="RobustVideoMatting" />
+  <img src="https://img.shields.io/badge/AI%20Core-Hybrid%20RVM%20%2B%20U2NetP-FF6F00" alt="Hybrid RVM + U2NetP" />
   <img src="https://img.shields.io/badge/Encoding-FFmpeg%20Pipe-green?logo=ffmpeg" alt="FFmpeg Pipe" />
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-blueviolet" alt="Windows and macOS" />
   <img src="https://img.shields.io/badge/License-MIT-brightgreen" alt="MIT License" />
@@ -23,7 +27,7 @@
 
 ## 🌟 Overview
 
-**AlphaFlow Studio Pro** is a modern, standalone desktop application engineered for video creators, VFX compositors, and motion designers. It extracts human subjects from standard video footage and generates production-ready **Alpha Video (`ProRes 4444 .mov` / `VP9 .webm`)**, **Luma Track Matte (`H.264 .mp4`)**, and **In-Camera 3D Depth Typography (Text Behind Subject)** — all running entirely locally on your hardware.
+**AlphaFlow Studio Pro** is a frameless, Apple HIG glassmorphic cross-platform desktop application (**Flutter Desktop + Local Python AI Bridge**) engineered for video creators, VFX compositors, and motion designers. It extracts both **human portraits (`RVM`)** and **general objects, animals, origami, products, and VFX (`Multi-Scale U2NetP + CIE-LAB/Focus Saliency`)** from standard video footage and generates production-ready **Alpha Video (`ProRes 4444 .mov` / `VP9 .webm`)**, **Luma Track Matte (`H.264 .mp4`)**, and **In-Camera 3D Depth Typography (`SAMPLE TEXT` Behind Subject)** — all running 100% locally on your hardware with automatic **Turkish (`tr`) / English (`en`)** OS localization and **Dark / Light Mode**.
 
 Say goodbye to expensive cloud clipping subscriptions, green screens, tedious manual rotoscoping, and temporal flickering.
 
@@ -261,6 +265,7 @@ python build_standalone.py
 
 | Parameter | Default | Range | Description |
 | :--- | :--- | :--- | :--- |
+| **Tolerance (Sensitivity)** | `50%` | `5% – 95%` | Controls foreground extraction sensitivity, multi-scale logit gamma, and connected-component filtering. |
 | **Downsample Ratio** | `0.35` | `0.20 – 0.50` | Internal model resolution. Lower values increase FPS; higher values capture fine hair details. |
 | **Feather** | `3 px` | `0 – 15 px` | Softens mask edges using Gaussian blur to eliminate harsh silhouettes. |
 | **Choke / Spread** | `0 px` | `-8 to +8 px` | Negative values shrink the mask to remove green/background fringe; positive values expand it. |
