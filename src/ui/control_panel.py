@@ -81,22 +81,35 @@ class ControlPanelWidget(QWidget):
         self._preview_combo.currentIndexChanged.connect(self.config_changed.emit)
         grid.addWidget(self._preview_combo, 0, 3)
 
-        # Feather & Choke
-        self._feather_lbl = QLabel("Kenar Yumuşatma (Feather): 3 px")
-        grid.addWidget(self._feather_lbl, 1, 0)
+        # Tolerance, Feather & Choke
+        self._tol_lbl = QLabel("Ön Plan Toleransı (Hassasiyet): %50")
+        self._tol_lbl.setStyleSheet("color: #22D3EE; font-weight: 700;")
+        grid.addWidget(self._tol_lbl, 1, 0)
+        self._tol_slider = QSlider(Qt.Orientation.Horizontal)
+        self._tol_slider.setRange(5, 95)
+        self._tol_slider.setValue(50)
+        self._tol_slider.valueChanged.connect(self._on_mask_slider_change)
+        grid.addWidget(self._tol_slider, 1, 1)
+
+        fc_row = QHBoxLayout()
+        self._feather_lbl = QLabel("Feather: 3 px")
         self._feather_slider = QSlider(Qt.Orientation.Horizontal)
         self._feather_slider.setRange(0, 15)
         self._feather_slider.setValue(3)
         self._feather_slider.valueChanged.connect(self._on_mask_slider_change)
-        grid.addWidget(self._feather_slider, 1, 1)
 
-        self._choke_lbl = QLabel("Kenar Daralt / Genişlet (Choke): 0 px")
-        grid.addWidget(self._choke_lbl, 1, 2)
+        self._choke_lbl = QLabel("Choke: 0 px")
         self._choke_slider = QSlider(Qt.Orientation.Horizontal)
         self._choke_slider.setRange(-8, 8)
         self._choke_slider.setValue(0)
         self._choke_slider.valueChanged.connect(self._on_mask_slider_change)
-        grid.addWidget(self._choke_slider, 1, 3)
+
+        fc_row.addWidget(self._feather_lbl)
+        fc_row.addWidget(self._feather_slider, stretch=1)
+        fc_row.addSpacing(12)
+        fc_row.addWidget(self._choke_lbl)
+        fc_row.addWidget(self._choke_slider, stretch=1)
+        grid.addLayout(fc_row, 1, 2, 1, 2)
 
         root.addWidget(settings_group)
 
@@ -107,7 +120,7 @@ class ControlPanelWidget(QWidget):
         tgrid.setVerticalSpacing(8)
 
         tgrid.addWidget(QLabel("Arkadaki Yazı:"), 0, 0)
-        self._text_edit = QLineEdit("VAZGEÇTİN ACİZSİN")
+        self._text_edit = QLineEdit("SAMPLE TEXT")
         self._text_edit.setPlaceholderText("Karakterin arkasına gelecek metni yazın...")
         self._text_edit.textChanged.connect(self._on_text_custom_changed)
         tgrid.addWidget(self._text_edit, 0, 1)
@@ -182,8 +195,9 @@ class ControlPanelWidget(QWidget):
         self.config_changed.emit()
 
     def _on_mask_slider_change(self) -> None:
-        self._feather_lbl.setText(f"Kenar Yumuşatma (Feather): {self._feather_slider.value()} px")
-        self._choke_lbl.setText(f"Kenar Daralt / Genişlet (Choke): {self._choke_slider.value()} px")
+        self._tol_lbl.setText(f"Ön Plan Toleransı (Hassasiyet): %{self._tol_slider.value()}")
+        self._feather_lbl.setText(f"Feather: {self._feather_slider.value()} px")
+        self._choke_lbl.setText(f"Choke: {self._choke_slider.value()} px")
         self.config_changed.emit()
 
     def _on_text_custom_changed(self) -> None:
@@ -227,6 +241,7 @@ class ControlPanelWidget(QWidget):
         return MattingConfig(
             export_mode=self._export_combo.currentData(),
             preview_mode=self._preview_combo.currentData(),
+            tolerance_pct=self._tol_slider.value(),
             feather_px=self._feather_slider.value(),
             choke_px=self._choke_slider.value(),
             backdrop_text=self._text_edit.text(),

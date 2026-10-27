@@ -30,16 +30,17 @@ class PreviewMode(str, Enum):
 
 @dataclass
 class MattingConfig:
-    """Kullanıcının arayüzden ayarladığı maskeleme, 3D yazı ve çıktı parametreleri."""
+    """Kullanıcının arayüzden ayarladığı maskeleme, tolerans, 3D yazı ve çıktı parametreleri."""
     export_mode: ExportMode = ExportMode.LUMA_MATTE_MP4
     preview_mode: PreviewMode = PreviewMode.AUTO_EXPORT
     downsample_ratio: float = 0.35     # RVM iç çözünürlük oranı (0.25 - 0.50 arası hız/kalite dengesi)
+    tolerance_pct: int = 50            # Ön plan ayırma toleransı / hassasiyeti (%1 - %100)
     feather_px: int = 3                # Kenar yumuşatma (Gaussian yarıçapı)
     choke_px: int = 0                  # Kenar daraltma (-) veya genişletme (+)
     threshold_low: int = 12            # Gürültü alt eşiği (0-255)
     threshold_high: int = 242          # Tam opak üst eşik (0-255)
     temporal_smooth: float = 0.20      # Kareler arası EMA titreşim sönümleme (0.0 - 0.7)
-    backdrop_text: str = "VAZGEÇTİN ACİZSİN"  # Karakterin arkasına yerleştirilecek 3D yazı
+    backdrop_text: str = "SAMPLE TEXT" # Karakterin arkasına yerleştirilecek 3D yazı
     text_y_pct: int = 40               # Yazının dikey konumu (%10 üst - %90 alt)
     text_scale_pct: int = 100          # Yazı boyutu ölçeği (%40 - %220)
     text_color_hex: str = "#F0C05A"    # Yazı rengi (Kehribar / Altın varsayılan)

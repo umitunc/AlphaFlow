@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Single Responsibility: RVM (Robust Video Matting) ONNX model dosyasını
-kontrol eder ve yoksa resmi GitHub sürümlerinden otomatik indirir.
+Single Responsibility: RVM (İnsan/Portre Video Matting) ve U2NetP (Genel Nesne / Hayvan /
+Efekt Salient Foreground) ONNX model dosyalarını kontrol eder ve eksikse otomatik indirir.
 """
 
 import os
@@ -13,28 +13,44 @@ RVM_ONNX_URL = (
     "v1.0.0/rvm_mobilenetv3_fp32.onnx"
 )
 
+U2NETP_ONNX_URL = (
+    "https://github.com/danielgatis/rembg/releases/download/"
+    "v0.0.0/u2netp.onnx"
+)
 
-def ensure_rvm_model(
-    models_dir: str,
+
+def _download_if_missing(
+    url: str,
+    target_path: str,
+    min_bytes: int,
     progress_callback: Optional[Callable[[int], None]] = None,
 ) -> str:
-    """
-    Model dosyasının yerel yolunu döner; dosya mevcut değilse indirir.
-    """
-    os.makedirs(models_dir, exist_ok=True)
-    model_path = os.path.join(models_dir, "rvm_mobilenetv3_fp32.onnx")
-    if os.path.exists(model_path) and os.path.getsize(model_path) > 5_000_000:
-        return model_path
+    if os.path.exists(target_path) and os.path.getsize(target_path) > min_bytes:
+        return target_path
 
-    tmp_path = model_path + ".part"
+    tmp_path = target_path + ".part"
 
     def _reporthook(block_num: int, block_size: int, total_size: int) -> None:
         if progress_callback and total_size > 0:
             pct = int(min(100, (block_num * block_size * 100) // total_size))
             progress_callback(pct)
 
-    urllib.request.urlretrieve(RVM_ONNX_URL, tmp_path, reporthook=_reporthook)
-    if os.path.exists(model_path):
-        os.remove(model_path)
-    os.replace(tmp_path, model_path)
-    return model_path
+    urllib.request.urlretrieve(url, tmp_path, reporthook=_reporthook)
+    if os.path.exists(target_path):
+        os.remove(target_path)
+    os.replace(tmp_path, target_path)
+    return target_path
+
+
+def ensure_rvm_model(
+    models_dir: str,
+    progress_callback: Optional[Callable[[int], None]] = None,
+) -> str:
+    """RVM ve U2NetP (Genel Nesne) ONNX modellerinin hazır olmasını sağlar."""
+    os.makedirs(models_dir, exist_ok=True)
+    rvm_path = os.path.join(models_dir, "rvm_mobilenetv3_fp32.onnx")
+    u2netp_path = os.path.join(models_dir, "u2netp.onnx")
+
+    _download_if_missing(RVM_ONNX_URL, rvm_path, 5_000_000, progress_callback)
+    _download_if_missing(U2NETP_ONNX_URL, u2netp_path, 2_000_000, progress_callback)
+    return rvm_path
