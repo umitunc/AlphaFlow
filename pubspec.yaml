@@ -1,0 +1,42 @@
+name: alphaflow_studio
+description: "AlphaFlow Studio Pro — Next-Gen Local AI Video Alpha Matting, Luma Matte & 3D Depth Typography Studio for Windows & macOS."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  file_picker: ^10.3.3
+  desktop_drop: ^0.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  msix: ^3.16.12
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/alphaflow_logo_transparent.png
+    - assets/icons/alphaflow_logo_squircle_peel_transparent.png
+    - assets/icons/alphaflow_logo_3d_layers_transparent.png
+    - assets/icons/alphaflow_app_icon_1024.png
+    - assets/i18n/tr.json
+    - assets/i18n/en.json
+
+# Microsoft Store (MSIX) Packaging Configuration
+msix_config:
+  display_name: AlphaFlow Studio Pro
+  publisher_display_name: AlphaFlow Studio
+  identity_name: AlphaFlowStudio.AlphaFlowStudioPro
+  msix_version: 1.0.0.0
+  logo_path: assets/icons/alphaflow_app_icon_1024.png
+  capabilities: internetClient
+  languages: tr-tr, en-us
+  architecture: x64
+  store: false
