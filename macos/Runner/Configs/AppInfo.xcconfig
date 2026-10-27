@@ -1,0 +1,4 @@
+// Application-level settings for the Runner target.
+PRODUCT_NAME = AlphaFlow Studio Pro
+PRODUCT_BUNDLE_IDENTIFIER = com.alphaflow.studio.pro
+PRODUCT_COPYRIGHT = Copyright © 2026 AlphaFlow Studio. All rights reserved.
